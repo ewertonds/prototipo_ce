@@ -2,6 +2,13 @@ const form = document.querySelector("#mainForm");
 console.log(form);
 const servico = document.querySelector("#tipoServico");
 
+document.addEventListener("DOMContentLoaded", function() {
+  // Busque as opções da planilha e preencha o campo de seleção
+  google.script.run.withSuccessHandler(function(options) {
+    document.getElementById("nome").innerHTML = options;
+  }).getFormOptions();
+});
+
 function habilitarTroca() {
     var tipoServicoSelect = document.getElementById("tipoServico");
     var campoHabilitadoInput = document.getElementById("habilita-troca");
