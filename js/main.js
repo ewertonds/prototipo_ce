@@ -13,7 +13,7 @@ function habilitarTroca() {
     var tipoServicoSelect = document.getElementById("tipoServico");
     var campoHabilitadoInput = document.getElementById("habilita-troca");
 
-    campoHabilitadoInput.disabled = (tipoServicoSelect.value !== "troca");
+    campoHabilitadoInput.disabled = (tipoServicoSelect.value !== "Troca");
 }
 
 /*const getGeolocation = async () => {
