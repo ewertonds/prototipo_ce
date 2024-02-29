@@ -13,6 +13,59 @@
 </head>
 
 <body class="container">
+<!--- php --->
+<?php
+// Conexão com o banco de dados
+include('db_config.php');
+
+// Verifica a conexão
+if ($conn->connect_error) {
+    die("Erro de conexão: ". $conn->connect_error);
+}
+
+// Consulta para obter opções do banco de dados
+$sql = "SELECT id, nome_acad FROM registro_acad";
+$result = $conn->query($sql);
+
+// Cria um array para armazenar as opções
+$options = array();
+
+// Adiciona opções ao array
+while ($row = $result->fetch_assoc()) {
+    $options[] = $row;
+}
+
+// Submete o formulário para o BD
+$nome = $_POST['nome'];
+$email = $_POST['cpf'];
+$tipo_serv = $_POST['tipoServico'];
+$troca = $_POST['habilita-troca'];
+$latitude = $_POST['latitude'];
+$longitude = $_POST['longitude'];
+$endereco = $_POST['endereco'];
+$periodo = $_POST['periodo'];
+$email = $_POST['email'];
+$comentarios = $_POST['comentarios'];
+
+
+
+// Executar a consulta SQL para inserir dados
+$sql = "INSERT INTO tabela_usuarios (nome, email) VALUES ('$nome', '$email')";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Dados inseridos com sucesso!";
+} else {
+    echo "Erro ao inserir dados: " . $conn->error;
+}
+
+// Fecha a conexão com o banco de dados
+$conn->close();
+
+// Retorna as opções como JSON
+echo json_encode($options);
+?>
+<!----------->
+
     <header class="row align-items-center row-gap-4">
         <div class=" container col-8">
             <h1>REGISTRO DE PONTO VIRTUAL</h1>
@@ -22,7 +75,7 @@
         </div>
     </header>
     <article class="row mx-auto">
-        <form id="mainForm" class="container col-8" action="https://script.google.com/macros/s/AKfycbzXbU7rlesKsMkO9N_3NHnk3Akg2FmF21jD0VmJ_4b5_h8uE59zS5Kqmsbn6EEmSGI/exec" method="post" onsubmit="submitForm()">
+        <form id="mainForm" class="container col-8" method="post">
             <div class="form-row">
                 <div class="col-6">
                     <label for="nome">Nome:</label>
