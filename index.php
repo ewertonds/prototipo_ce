@@ -83,6 +83,9 @@ echo json_encode($options);
                 <div class="col-6">
                     <label for="nome">Nome:</label>
                     <select class="form-control" id="nome" name="nome">
+                    <?php foreach ($options as $option) : ?>
+            <option value="<?= $option['id']; ?>"><?= $option['nome_acad']; ?></option>
+        <?php endforeach; ?>
                     </select>
     
                     <label for="cpf">CPF:</label>
