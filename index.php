@@ -16,11 +16,11 @@
 <!--- php --->
 <?php
 // Conexão com o banco de dados
-include('db_config.php');
+include 'db_config.php';
 
 // Verifica a conexão
 if ($conn->connect_error) {
-    die("Erro de conexão: ". $conn->connect_error);
+    die("Erro de conexão: " . $conn->connect_error);
 }
 
 // Consulta para obter opções do banco de dados
@@ -36,27 +36,30 @@ while ($row = $result->fetch_assoc()) {
 }
 
 // Submete o formulário para o BD
-$nome = $_POST['nome'];
-$email = $_POST['cpf'];
-$tipo_serv = $_POST['tipoServico'];
-$troca = $_POST['habilita-troca'];
-$latitude = $_POST['latitude'];
-$longitude = $_POST['longitude'];
-$endereco = $_POST['endereco'];
-$periodo = $_POST['periodo'];
-$email = $_POST['email'];
-$comentarios = $_POST['comentarios'];
+$nome = $_POST['nome'] ?? '';
+$email = $_POST['cpf'] ?? '';
+$tipo_serv = $_POST['tipoServico'] ?? '';
+$troca = $_POST['habilita-troca'] ?? '';
+$latitude = $_POST['latitude'] ?? '';
+$longitude = $_POST['longitude'] ?? '';
+$endereco = $_POST['endereco'] ?? '';
+$periodo = $_POST['periodo'] ?? '';
+$email = $_POST['email'] ?? '';
+$comentarios = $_POST['comentarios'] ?? '';
 
-
+// Use declarações preparadas para evitar injeção de SQL
+$stmt = $conn->prepare("INSERT INTO registro_acad (nome, email) VALUES (?, ?)");
+$stmt->bind_param("ss", $nome, $email);
 
 // Executar a consulta SQL para inserir dados
-$sql = "INSERT INTO tabela_usuarios (nome, email) VALUES ('$nome', '$email')";
-
-if ($conn->query($sql) === TRUE) {
+if ($stmt->execute()) {
     echo "Dados inseridos com sucesso!";
 } else {
-    echo "Erro ao inserir dados: " . $conn->error;
+    echo "Erro ao inserir dados: " . $stmt->error;
 }
+
+// Fecha a declaração preparada
+$stmt->close();
 
 // Fecha a conexão com o banco de dados
 $conn->close();
@@ -64,7 +67,7 @@ $conn->close();
 // Retorna as opções como JSON
 echo json_encode($options);
 ?>
-<!----------->
+<!------------>
 
     <header class="row align-items-center row-gap-4">
         <div class=" container col-8">
