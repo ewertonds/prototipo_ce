@@ -48,8 +48,8 @@ $email = $_POST['email'] ?? '';
 $comentarios = $_POST['comentarios'] ?? '';
 
 // Use declarações preparadas para evitar injeção de SQL
-$stmt = $conn->prepare("INSERT INTO registro_acad (nome, email) VALUES (?, ?)");
-$stmt->bind_param("ss", $nome, $email);
+$stmt = $conn->prepare("INSERT INTO registro_acad (nome, cpf, tipo_servico, troca, latitude, longitude, endereco, periodo, email, comentarios) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("ssssssssss", $nome, $email, $tipo_serv, $troca, $latitude, $longitude, $endereco, $periodo, $email, $comentarios);
 
 // Executar a consulta SQL para inserir dados
 if ($stmt->execute()) {
